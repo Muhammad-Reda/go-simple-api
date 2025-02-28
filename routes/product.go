@@ -10,4 +10,5 @@ func ProductRoutes() {
 	router := rtr.MainRouter
 
 	router.HandleFunc("/products", cors.IPFilter(products.GetAllProducts, rtr.ListPattern))
+	router.HandleFunc("/product/{id}", cors.IPFilter(products.GetProductByCode, rtr.ListPattern))
 }

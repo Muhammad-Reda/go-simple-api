@@ -3,6 +3,8 @@ package cors
 import (
 	"net"
 	"net/http"
+	"simple-api/router"
+	"strings"
 )
 
 func IPFilter(next http.HandlerFunc, pattern map[string]bool) http.HandlerFunc {
@@ -14,23 +16,37 @@ func IPFilter(next http.HandlerFunc, pattern map[string]bool) http.HandlerFunc {
 
 	return func(res http.ResponseWriter, req *http.Request) {
 
-		if !pattern[req.URL.Path] {
-			http.Error(res, "Pattern not found", http.StatusNotFound)
-			return
-		}
-
 		ip, _, err := net.SplitHostPort(req.RemoteAddr)
 		if err != nil {
-			http.Error(res, "Forbidder", http.StatusForbidden)
+			router.ErrorJson(res, "Forbidder", http.StatusForbidden)
 			return
 		}
 
 		if !host[ip] {
-			http.Error(res, "Forbidden", http.StatusForbidden)
+			router.ErrorJson(res, "Forbidden", http.StatusForbidden)
 			return
 		}
 
-		next(res, req)
+		// First check for exact path match
+		if pattern[req.URL.Path] {
+			next(res, req)
+			return
+		}
+
+		// Then check for prefix matches with trailing slash
+		for patternPath := range pattern {
+			if patternPath == "/" {
+				continue
+			}
+
+			if strings.HasPrefix(req.URL.Path, patternPath) && strings.HasSuffix(patternPath, "/") {
+				next(res, req)
+				return
+			}
+		}
+
+		router.ErrorJson(res, "Path not allowed", http.StatusForbidden)
+
 	}
 
 }

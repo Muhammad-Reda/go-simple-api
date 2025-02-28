@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/go-sql-driver/mysql"
 	"net/http"
 	"simple-api/db"
 	"simple-api/router"
+
+	"github.com/go-sql-driver/mysql"
 )
 
 func CreateNewUser(res http.ResponseWriter, req *http.Request) {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"simple-api/cors"
+	"simple-api/router"
 	rtr "simple-api/router"
 	"simple-api/routes"
 )
@@ -13,6 +14,10 @@ func main() {
 	mainRouter := rtr.MainRouter
 
 	mainRouter.HandleFunc("/", cors.IPFilter(func(res http.ResponseWriter, req *http.Request) {
+		if req.URL.Path != "/" {
+			router.ErrorJson(res, "Not found", http.StatusNotFound)
+			return
+		}
 		res.Header().Set("Content-Type", "application/json")
 		response := map[string]string{
 			"message": "Hello world",

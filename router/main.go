@@ -22,5 +22,4 @@ func ErrorJson(writer http.ResponseWriter, message string, code int) {
 		http.Error(writer, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	return
 }

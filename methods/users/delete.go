@@ -2,11 +2,15 @@ package users
 
 import (
 	"database/sql"
+	"errors"
+
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"simple-api/db"
 	"simple-api/router"
+
+	"github.com/go-sql-driver/mysql"
 )
 
 func DeleteUserById(res http.ResponseWriter, req *http.Request) {
@@ -39,6 +43,18 @@ func DeleteUserById(res http.ResponseWriter, req *http.Request) {
 
 	result, errExc := conn.Exec(query, id)
 	if errExc != nil {
+		var mysqlErr *mysql.MySQLError
+		if errors.As(errExc, &mysqlErr) {
+			if mysqlErr.Number == 1452 {
+				router.ErrorJson(res, "Foreign key constraint fails", http.StatusBadRequest)
+				return
+			}
+			if mysqlErr.Number == 1451 {
+				router.ErrorJson(res, "Foreign key constraint fails", http.StatusBadRequest)
+				return
+			}
+		}
+
 		router.ErrorJson(res, "Internal server error execute", http.StatusInternalServerError)
 		fmt.Fprintf(res, "Error: %v", errExc)
 		return
