@@ -21,10 +21,10 @@ func GetProductByCode(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	code := req.URL.Path[len("/product/"):]
+	id := req.URL.Path[len("/product/"):]
 	var product models.Product
 
-	query := "SELECT * FROM products WHERE code = ?"
+	query := "SELECT * FROM products WHERE id = ?"
 
 	conn, errDb := db.Connection()
 	if errDb != nil {
@@ -32,7 +32,7 @@ func GetProductByCode(res http.ResponseWriter, req *http.Request) {
 	}
 	defer conn.Close()
 
-	errQuery := conn.QueryRow(query, code).Scan(&product.Code, &product.Name, &product.Category, &product.Price, &product.CreatedAt, &product.UpdatedAt, &product.DeletedAt)
+	errQuery := conn.QueryRow(query, id).Scan(&product.Id, &product.Code, &product.Name, &product.Category, &product.Price, &product.CreatedAt, &product.UpdatedAt, &product.DeletedAt)
 
 	if errQuery != nil {
 		if errors.Is(errQuery, sql.ErrNoRows) {

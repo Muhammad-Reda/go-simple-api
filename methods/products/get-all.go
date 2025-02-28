@@ -20,7 +20,7 @@ func GetAllProducts(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var products models.Product
+	var products []models.Product
 	query := "SELECT * FROM api1.products"
 
 	conn, errDb := db.Connection()
@@ -43,11 +43,13 @@ func GetAllProducts(res http.ResponseWriter, req *http.Request) {
 	}
 
 	for rows.Next() {
-		err := rows.Scan(&products.Code, &products.Name, &products.Category, &products.Price, &products.CreatedAt, &products.UpdatedAt, &products.DeletedAt)
+		var product models.Product
+		err := rows.Scan(&product.Id, &product.Code, &product.Name, &product.Category, &product.Price, &product.CreatedAt, &product.UpdatedAt, &product.DeletedAt)
 		if err != nil {
 			router.ErrorJson(res, "Internal server error scan", http.StatusInternalServerError)
 			return
 		}
+		products = append(products, product)
 	}
 
 	response := map[string]interface{}{

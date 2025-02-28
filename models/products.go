@@ -6,6 +6,7 @@ import (
 )
 
 type Product struct {
+	Id        int
 	Code      string
 	Name      string
 	Category  string

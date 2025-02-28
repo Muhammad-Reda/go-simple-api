@@ -7,6 +7,7 @@ import (
 	"simple-api/db"
 	"simple-api/router"
 	"strings"
+	"time"
 )
 
 func UpdateUserById(res http.ResponseWriter, req *http.Request) {
@@ -53,9 +54,11 @@ func UpdateUserById(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	currentTime := time.Now()
+	args = append(args, currentTime)
 	args = append(args, id)
 
-	query := "UPDATE api1.users SET " + strings.Join(setValues, ",") + " WHERE id = ?"
+	query := "UPDATE api1.users SET " + strings.Join(setValues, ",") + ", updated_at = ? WHERE id = ?"
 
 	conn, errDb := db.Connection()
 	if errDb != nil {
