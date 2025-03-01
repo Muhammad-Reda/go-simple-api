@@ -49,6 +49,8 @@ func GetProductByCode(res http.ResponseWriter, req *http.Request) {
 		"product": product,
 	}
 
+	res.Header().Set("Content-Type", "application/json")
+
 	errJson := json.NewEncoder(res).Encode(response)
 	if errJson != nil {
 		router.ErrorJson(res, "Internal server error encoding json", http.StatusInternalServerError)

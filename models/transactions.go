@@ -5,13 +5,13 @@ import (
 )
 
 type Transactions struct {
-	Code        string
-	Date        time.Time
-	TotalPrice  int64
-	Discount    int
-	Status      string
-	Payment     string
-	ProductCode string
-	UserId      int64
-	Quantity    int
+	Code       string
+	Date       time.Time
+	Quantity   int
+	TotalPrice int64
+	Discount   int
+	Status     string
+	Payment    string
+	UserId     int64
+	ProductId  int
 }

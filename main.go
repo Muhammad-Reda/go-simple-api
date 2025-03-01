@@ -31,6 +31,7 @@ func main() {
 
 	routes.UserRoutes()
 	routes.ProductRoutes()
+	routes.TransactionsRoutes()
 
 	err := http.ListenAndServe(":8080", rtr.MainRouter)
 	if err != nil {

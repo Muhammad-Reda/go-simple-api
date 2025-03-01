@@ -45,7 +45,7 @@ func IPFilter(next http.HandlerFunc, pattern map[string]bool) http.HandlerFunc {
 			}
 		}
 
-		router.ErrorJson(res, "Path not allowed", http.StatusForbidden)
+		router.ErrorJson(res, "Path not found", http.StatusNotFound)
 
 	}
 
