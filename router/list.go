@@ -15,6 +15,4 @@ var ListPattern = map[string]bool{
 	"/transactions":        true,
 	"/transaction/":        true,
 	"/transaction/add":     true,
-	"/transaction/update/": true,
-	"/transaction/delete/": true,
 }
