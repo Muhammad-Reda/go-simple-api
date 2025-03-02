@@ -48,7 +48,7 @@ The project includes comprehensive error handling to ensure that appropriate err
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/simple-api.git
+   git clone https://github.com/Muhammad-Reda/go-simple-api.git
    cd simple-api
    ```
 
